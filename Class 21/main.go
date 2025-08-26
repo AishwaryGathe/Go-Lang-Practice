@@ -42,6 +42,4 @@ func main() {
 
 	anotherURL := partofUrl.String()
 	fmt.Println(anotherURL)
-
-
 }
