@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
 func main() {
 	fmt.Println("Hellow this is server!!")
 	// PerformGetrequest()
+	// PerformPostjsonRequest()
 	PerformPostRequest()
 }
 
@@ -43,7 +45,7 @@ func PerformGetrequest() {
 
 }
 
-func PerformPostRequest() {
+func PerformPostjsonRequest() {
 	const myurl = "http://localhost:8000/post"
 
 	//fake json requrst
@@ -64,6 +66,27 @@ func PerformPostRequest() {
 
 	defer response.Body.Close()
 
+	content, _ := ioutil.ReadAll(response.Body)
+
+	fmt.Println(string(content))
+}
+
+
+func PerformPostRequest(){
+	const myurl = "http://localhost:8000/postform"
+
+	data := url.Values{}
+	data.Add("firstname","Aishwary")
+	data.Add("lastname","gathe")
+	data.Add("email","Aishwarygathe@gmail.com")
+
+	response, err := http.PostForm(myurl,data)
+
+	if err != nil {
+		panic(err)
+	}
+
+	defer response.Body.Close()
 	content, _ := ioutil.ReadAll(response.Body)
 
 	fmt.Println(string(content))
