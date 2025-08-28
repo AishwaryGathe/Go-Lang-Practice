@@ -9,7 +9,8 @@ import (
 
 func main() {
 	fmt.Println("Hellow this is server!!")
-	PerformGetrequest()
+	// PerformGetrequest()
+	PerformPostRequest()
 }
 
 func PerformGetrequest() {
@@ -26,7 +27,6 @@ func PerformGetrequest() {
 
 	fmt.Println("Content length is:", response.ContentLength)
 
-
 	var responseString strings.Builder
 	content, err := ioutil.ReadAll(response.Body)
 
@@ -36,10 +36,35 @@ func PerformGetrequest() {
 
 	byteCount, _ := responseString.Write(content)
 
-	fmt.Println("ByteContent is:",byteCount)
+	fmt.Println("ByteContent is:", byteCount)
 	fmt.Println(responseString.String())
-	
 
 	// fmt.Println(string(content))
 
+}
+
+func PerformPostRequest() {
+	const myurl = "http://localhost:8000/post"
+
+	//fake json requrst
+
+	requestBody := strings.NewReader(`
+		{
+			"coursename":"lets go with golang....",
+			"price":0,
+			"platform":"aishwarygathe.tech"
+		}
+	`)
+
+	response, err :=http.Post(myurl,"application/json",requestBody)
+
+	if err != nil{
+		panic(err)
+	}
+
+	defer response.Body.Close()
+
+	content, _ := ioutil.ReadAll(response.Body)
+
+	fmt.Println(string(content))
 }
