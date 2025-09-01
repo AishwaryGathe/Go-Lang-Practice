@@ -1,8 +1,10 @@
 package main
 
-import "fmt"
-
-
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+)
 
 //model for course -file
 type Course struct{
@@ -17,6 +19,8 @@ type Author struct{
 	Website string `json:"website"`
 }
 
+
+
 //fake Database
 var courses []Course
 
@@ -30,3 +34,18 @@ func main() {
 	fmt.Println("Hello API!!!")
 
 }
+
+//controllers - file
+// serve home route
+func serveHome(w http.ResponseWriter , r *http.Request){
+	w.Write([]byte("<h1>Welcome to APi by aishwary</h1>"))
+}
+
+func getAllCourse(w http.ResponseWriter, r *http.Request){
+	fmt.Println("Get all Courses")
+	w.Header().Set("Content-type", "application/json")
+	json.NewEncoder(w).Encode(courses)
+}
+
+
+
