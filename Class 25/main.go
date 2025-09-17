@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -35,7 +36,22 @@ func (c *Course) Isempty() bool {
 }
 
 func main() {
-	fmt.Println("Hello API!!!")
+	fmt.Println("API ")
+	r := mux.NewRouter()
+
+	courses = append(courses,Course{CourseId: "2", CourseName: "ReactJS", CoursePrice: 299, Author: &Author{Fullname: "Aishwary Gathe",Website: "aishwarygathe.tech"} } )
+	courses = append(courses,Course{CourseId: "4", CourseName: "FullStack", CoursePrice: 199, Author: &Author{Fullname: "Aishwary Gathe",Website: "aishwary.tech"} } )
+
+
+	r.HandleFunc("/", serveHome).Methods("GET")
+	r.HandleFunc("/Courses", getAllCourse).Methods("GET")
+	r.HandleFunc("/course/{id}", getOnecourse).Methods("GET")
+	r.HandleFunc("/course", createOneCourse).Methods("POST")
+	r.HandleFunc("/course/{id}", updateOneCourse).Methods("PUT")
+	r.HandleFunc("/course/{id}", deleteOneCourse).Methods("DELETE")
+	
+
+	log.Fatal(http.ListenAndServe(":4000", r))
 
 }
 
@@ -115,4 +131,20 @@ func updateOneCourse(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// todo send a response when id is not found
+}
+
+func deleteOneCourse(w http.ResponseWriter, r *http.Request){
+	fmt.Println("Delete one course!")
+	w.Header().Set("Content-Type", "application/json")
+
+	params := mux.Vars(r)
+
+	// loop, id, remove(index, index+1)
+
+	for index, course := range courses{
+		if course.CourseId == params["id"]{
+			courses = append(courses[:index], courses[index+1:]... )
+			break
+		}
+	}
 }
