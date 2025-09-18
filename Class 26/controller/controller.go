@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-const connectionString = "mongodb+srv://admin:admin123@cluster0.o2i0gao.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const connectionString = ""
 
 const dbName = "netflix"
 const colName = "watchlist"
@@ -36,12 +36,11 @@ func init() {
 
 }
 
-
 // mongodb helpers - files
 
-func insertOneMovie(movie model.Netflix){
-	inserted, err := collection.InsertOne(context.Background(),movie)
-	if err != nil{
+func insertOneMovie(movie model.Netflix) {
+	inserted, err := collection.InsertOne(context.Background(), movie)
+	if err != nil {
 		log.Fatal(err)
 	}
 
