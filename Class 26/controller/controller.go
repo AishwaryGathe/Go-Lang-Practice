@@ -48,8 +48,6 @@ func insertOneMovie(movie model.Netflix) {
 
 	fmt.Println("Inserted 1 Movie in db with id:", inserted.InsertedID)
 }
-
-
 // update 1 record
 
 func updateOneMovie(movieId string){
@@ -87,4 +85,24 @@ func deleteAllMoive() int64 {
 
 	fmt.Println("Number of movie delete:",deleteResult.DeletedCount)
 	return deleteResult.DeletedCount
+}
+
+func getAllmovies() []primitive.M {
+	cur, err := collection.Find(context.Background(), bson.D{{}})
+	if err != nil{
+		log.Fatal(err)
+	}
+
+	var movies []primitive.M
+
+	for cur.Next(context.Background()){
+		var movie bson.M
+		err := cur.Decode(&movie)
+		if err != nil{
+			log.Fatal(err)
+		}
+		movies = append(movies, movie)
+	}
+	defer cur.Close(context.Background())
+	return movies
 }
